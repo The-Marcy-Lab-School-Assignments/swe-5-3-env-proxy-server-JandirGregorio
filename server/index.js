@@ -25,7 +25,7 @@ const serveStatic = express.static(pathToFrontend);
 const logRoutes = (req, res, next) => {
   const time = new Date().toLocaleString();
   console.log(`${req.method}: ${req.originalUrl} - ${time}`);
-  next(); // Passes the request to the next middleware/controller
+  next();
 };
 
 
@@ -47,10 +47,15 @@ const serveGifs = async (req, res, next) => {
   }
 }
 
+const serve404 = (req, res, next) => {
+  res.status(404).send({ error: `Not found: ${req.originalUrl}` });
+}
+
 app.use(logRoutes);
 app.use(serveStatic);
 
 app.get('/api/gifs', serveGifs);
+app.use(serve404);
 
 //////////////////////////
 // Listener
