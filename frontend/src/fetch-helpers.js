@@ -19,7 +19,7 @@ export const getTrendingGifs = async () => {
 
 export const getGifsBySearch = async (searchTerm) => {
   try {
-    const response = await fetch(`https://api.giphy.com/v1/gifs/search?api_key=${API_KEY}&q=${searchTerm}&limit=3`);
+    const response = await fetch(`https://api.giphy.com/v1/gifs/search?api_key=${process.env.API_KEY}&q=${searchTerm}&limit=3`);
 
     if (!response.ok) {
       throw new Error(`Fetch failed with status - ${response.status}, ${response.statusText}`);
