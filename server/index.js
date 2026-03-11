@@ -21,10 +21,18 @@ const app = express();
 
 const serveStatic = express.static(pathToFrontend);
 
+// Middleware function for logging route requests
+const logRoutes = (req, res, next) => {
+  const time = new Date().toLocaleString();
+  console.log(`${req.method}: ${req.originalUrl} - ${time}`);
+  next(); // Passes the request to the next middleware/controller
+};
+
+
 // GET /api/gifs
 const serveGifs = async (req, res, next) => {
   try {
-    const url = `https://api.giphy.com/v1/gifs/trending?limit=3&rating=g&api_key=${process.env.API_KEY}`;
+    const url = `https://api.giphy.com/v1/gifs/trending?limit=10&rating=g&api_key=${process.env.API_KEY}`;
 
     const response = await fetch(url);
     if (!response.ok) {
@@ -39,6 +47,7 @@ const serveGifs = async (req, res, next) => {
   }
 }
 
+app.use(logRoutes);
 app.use(serveStatic);
 
 app.get('/api/gifs', serveGifs);
