@@ -28,11 +28,11 @@ const logRoutes = (req, res, next) => {
   next();
 };
 
-
 // GET /api/gifs
 const serveGifs = async (req, res, next) => {
   try {
-    const url = `https://api.giphy.com/v1/gifs/trending?limit=10&rating=g&api_key=${process.env.API_KEY}`;
+    const { q } = req.query;
+    const url = q ? `https://api.giphy.com/v1/gifs/search?api_key=${process.env.API_KEY}&q=${q}&limit=10` : `https://api.giphy.com/v1/gifs/trending?limit=10&rating=g&api_key=${process.env.API_KEY}`;
 
     const response = await fetch(url);
     if (!response.ok) {
